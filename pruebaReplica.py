@@ -4,16 +4,16 @@ import time
 import os
 
 # Configuración de la conexión a MongoDB Atlas // Configuration of the connection to MongoDB Atlas
-atlas_connection_string = "mongodb+srv://PruebaWeb:pruebaweb@cluster0.lolgdgf.mongodb.net/?retryWrites=true&w=majority"
+atlas_connection_string = "here is your MongoDB connection link"
 atlas_client = MongoClient(atlas_connection_string)
-atlas_db = atlas_client["test"] # nombre de la base de datos // name of the database
-atlas_collection = atlas_db["users"] # nombre de la coleccion // name of the collection
+atlas_db = atlas_client[""] # nombre de la base de datos // name of the database
+atlas_collection = atlas_db[""] # nombre de la coleccion // name of the collection
 
 # Configuración de la conexión a MongoDB Compass // Configuration of the connection to MongoDB Compass
 compass_connection_string = "mongodb://127.0.0.1:27017"
 compass_client = MongoClient(compass_connection_string)
-compass_db = compass_client["replicacion1"] # nombre de la base de datos // name of the database
-compass_collection = compass_db["replicas"] # nombre de la coleccion // name of the collection
+compass_db = compass_client[""] # nombre de la base de datos // name of the database
+compass_collection = compass_db[""] # nombre de la coleccion // name of the collection
 
 # Función para replicar los datos // function to replicate our data
 def replicate_data():
@@ -22,7 +22,7 @@ def replicate_data():
 
     if len(documents) > 0:
         # Exportar los datos a un archivo de respaldo // export the data to a backup file
-        backup_file = "replica.txt" # nombre de nuestro archivo donde se guardara los datos // name our your file when whe are exportin the data 
+        backup_file = "replica.txt" # nombre de nuestro archivo donde se guardara los datos [puedes cambiar el nombre si gustas] // name our your file when whe are exportin the data [you can change the name if you want] 
         subprocess.run(["mongodump", "--uri", atlas_connection_string, "--archive=" + backup_file])
 
         # Verificar si el archivo de respaldo se generó correctamente // validate if the backup file exists
@@ -30,6 +30,8 @@ def replicate_data():
             print("El archivo de respaldo se generó correctamente.")
 
             # Importar los datos en MongoDB Compass // import the data to MongoDB Compass
+            # --nsFrom es la tabla de origen donde se extraeran los datos // --nsFrom is the table of origin that data is extracted 
+            # --nsTo es la tabla destino de la informacion exportada // --nsTo is the table of destiny 
             subprocess.run(["mongorestore", "--uri", compass_connection_string, "--archive=" + backup_file, "--nsFrom=test.users", "--nsTo=replicacion1.replicas"])
             print("Los datos se importaron correctamente en MongoDB Compass.")
         else:
